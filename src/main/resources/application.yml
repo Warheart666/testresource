@@ -1,0 +1,45 @@
+spring:
+  application:
+    name: project
+
+server:
+  port: 13130
+  servlet:
+    context-path: /project
+
+security:
+  oauth2:
+    resource:
+      token-info-uri: http://localhost:8083/oauth/check_token
+      user-info-uri: http://localhost:8083/auth_api/user
+      prefer-token-info: false  #иначе не будет данных по юзеру, а только по сервису.
+    client:
+      grant-type: client_credentials
+      client-secret: secret
+      client-id: project_client
+      scope: read
+      access-token-uri: http://localhost:8083/oauth/token
+
+eureka:
+  instance:
+    leaseRenewalIntervalInSeconds: 10  #https://cloud.spring.io/spring-cloud-netflix/multi/multi__service_discovery_eureka_clients.html  1.10 Why Is It so Slow to Register a Service?
+    leaseExpirationDurationInSeconds: 5 #how long waiting answer
+    preferIpAddress: true
+  client:
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
+org:
+  springframework:
+    security:
+      oauth2: debug
+logging:
+  level:
+    root: INFO
+    org.springframework.web:  debug
+    org.springframework.security: trace
+    org.springframework.security.oauth2: debug
+
+
+spring.http.log-request-details: true
+
